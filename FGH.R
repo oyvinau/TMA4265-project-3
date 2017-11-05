@@ -10,13 +10,8 @@ phi = 3 / 10
 data <- c(0.58, -1.34, 0.61)
 points <- c(11.2, 51.8, 81.4)
 
-t <- c()
-for (i in 1:TIMES) {
-   t <- c(t, i)
-}
-for (i in points) {
-  t <- c(t, i)
-}
+t <- 1:TIMES
+t <- c(t, points)
 
 size = length(t)
 
