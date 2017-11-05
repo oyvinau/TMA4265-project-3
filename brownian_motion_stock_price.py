@@ -51,7 +51,7 @@ def plot_realizations(n_sim, n_days, x0):
 	print(over_50/100)
 
 #plot_realizations(100, 120, 40)
-print(5/(np.sqrt(60)*0.75))
+
 
 '''
 2. On March 2, the price of the stock is $ 45. What is now the probability
@@ -77,9 +77,9 @@ def hitting_times(n_sim, truncation_time):
 	for n in range(n_sim):
 		for t in time_steps:
 			#calculate prob of hit at time t
-			prob = 1-stats.norm.pdf(4/(np.sqrt(t+1)*stand_err))
+			prob = 1-stats.norm.cdf(44, 40, np.sqrt(t+1)*stand_err)
 			#dice if hit or not with prob
-			if np.random.uniform() > prob:
+			if np.random.uniform() < prob:
 				hitting_times.append(t)
 				#if hit end
 				break
@@ -87,42 +87,4 @@ def hitting_times(n_sim, truncation_time):
 	hitting_times.sort()
 	return hitting_times
 
-def plot_hit(n_sim, truncation_time):
-	hits = hitting_times(n_sim, truncation_time)
-	plot_list = [0 for i in range(len(hits))]
-	for hit in hits:
-		plot_list[hit] += 1
-	for i in range(len(plot_list)):
-		plot_list[i] = plot_list[i] / len(plot_list)
-
-	plot_list2 = []
-	summ=0
-	for i in plot_list:
-		summ+=i
-		plot_list2.append(summ)
-
-	print(plot_list)
-	print(hits[-1])
-	analytical_list = [stats.norm.pdf(4/(np.sqrt(t+1)*stand_err)) for t in range(hits[-1])]
-	analytical_list_points = [0 for i in range(len(analytical_list))]
-	for i in range(len(analytical_list)):
-		if i==0:
-			analytical_list_points[i] = analytical_list[i]
-		else:
-			analytical_list_points[i] = analytical_list[i] - analytical_list[i-1]
-	print(analytical_list)
-	plt.figure()
-	plt.plot(range(hits[-1]), analytical_list, 'bo')
-	plt.bar(range(hits[-1]), plot_list[:hits[-1]])
-	plt.show()
-
-#plot_hit(100, 1000)
-
-hits = hitting_times(10000, 1000)
-hit_bar = [0 for _ in range(hits[-1]+1)]
-for i in hits:
-	hit_bar[i]+=1
-print(hit_bar)
-plt.figure()
-plt.bar(range(hits[-1]+1), hit_bar)
-plt.show()
+print(hitting_times(100, 1000))
