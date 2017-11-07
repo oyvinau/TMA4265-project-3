@@ -26,11 +26,9 @@ S_b = S[(size - 2):size,(size - 2):size]
 my = S_ab %*% solve(S_b, data)
 var = S_a - S_ab %*% solve(S_b) %*% S_ba
 
-
 main = function() {
   
   # drawing 100 simulations
-  
   z = rnorm(TIMES, 0, 1)
   x = my + var %*% z
   t = t[1:TIMES]
