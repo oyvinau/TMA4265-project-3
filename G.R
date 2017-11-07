@@ -1,6 +1,5 @@
 library("ggplot2")
 
-
 sigma = 4
 phi = 0.2
 
@@ -32,8 +31,6 @@ S_b = S[142:size,142:size]
 my = my_a + S_ab %*% solve(S_b, data - my_b)
 var = S_a - S_ab %*% solve(S_b) %*% S_ba
 var = diag(var)
-
-
 
 main = function() {
   

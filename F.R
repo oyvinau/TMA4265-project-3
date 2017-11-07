@@ -1,7 +1,6 @@
 library("ggplot2")
 colors = c("#89C5DA", "#DA5724", "#74D944", "#CE50CA", "#3F4921", "#C0717C", "#CBD588", "#5F7FC7", 
            "#673770", "#D3D93E")
-
 sigma = 1
 phi = 3 / 10
 
@@ -16,9 +15,6 @@ size = length(t)
 H = abs( matrix(1, size, 1) %*% t - t %*% matrix(1, 1, size) )
 S = sigma * sigma * exp( -phi * H )
 
-Lt = chol(S)
-L = t(Lt)
-
 # the new expectation and variance based on the data
 S_a = S[1:(size - 3), 1:(size - 3)]
 S_ab = S[1:(size - 3),(size - 2):size]
@@ -30,8 +26,9 @@ var = S_a - S_ab %*% solve(S_b) %*% S_ba
 
 simulate_independent = function() {
   p = ggplot()
+  Lt = chol(S)
+  L = t(Lt)
   for (i in 1:10) {
-    # 
     z = rnorm(100)
     x = L %*% z
     df = data.frame(t, x)
@@ -42,11 +39,13 @@ simulate_independent = function() {
   print(p)
 }
 simulate_dependent = function() {
-  t = t[1:100]
   p = ggplot()
+  t = t[1:100]
+  Lt = chol(var)
+  L = t(Lt)
   for (i in 1:10) {
     z = rnorm(100)
-    x = my + var %*% z
+    x = my + L %*% z
     df = data.frame(t, x)
     p = p + geom_line(data = df, aes(t, x), color = colors[i], size = 1)
   }
